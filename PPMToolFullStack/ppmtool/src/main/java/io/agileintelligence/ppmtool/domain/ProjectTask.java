@@ -1,11 +1,15 @@
 package io.agileintelligence.ppmtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
 
+import org.hibernate.annotations.Proxy;
+
+import java.util.Date;
+@Proxy(lazy=false)
 @Entity
 public class ProjectTask {
 
@@ -19,16 +23,19 @@ public class ProjectTask {
     private String acceptanceCriteria;
     private String status;
     private Integer priority;
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date dueDate;
     //ManyToOne with Backlog
-    @ManyToOne(fetch = FetchType.EAGER) //REMOVE REFRESH
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="backlog_id", updatable = false, nullable = false)
     @JsonIgnore
     private Backlog backlog;
 
     @Column(updatable = false)
     private String projectIdentifier;
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date create_At;
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date update_At;
 
     public ProjectTask() {
